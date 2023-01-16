@@ -3,9 +3,9 @@ import { Task } from './ListContainer';
 
 export const ListItem = ({ label, isDone }: Task) => {
   return (
-    <li>
+    <li className="justify-between">
       <CheckBox isDone={isDone} />
-      {label}
+      <label className="inline-block text-gray-800">{label}</label>
     </li>
   );
 };

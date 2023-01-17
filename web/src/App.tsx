@@ -4,6 +4,7 @@ import { AddNewItem } from './components/AddNewItem';
 import { Divider } from './components/Divider';
 import { ListContainer } from './components/ListContainer';
 import { TitleBar } from './components/TitleBar';
+import { AddButton } from './components/AddButton';
 
 export interface Task {
   label: string;
@@ -39,18 +40,18 @@ const tasks: Task[] = [
 ];
 
 function App() {
-  const [task, addTask] = useState();
+  const addTask = () => console.log('pressed');
 
   return (
     <div className="bg-slate-500">
-      <div className="p-4 max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+      <div className="p-4 max-w-md container bg-white rounded-xl overflow-hidden relative">
         <TitleBar />
         <ListContainer type="Incomplete" tasks={tasks} />
         <ListContainer
           type="Complete"
           tasks={tasks.map((el) => ({ ...el, isDone: true }))}
         />
-        <AddNewItem />
+        <AddButton addTask={addTask} />
       </div>
     </div>
   );

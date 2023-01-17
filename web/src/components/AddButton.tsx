@@ -4,11 +4,10 @@ export const AddButton = ({ addTask }: { addTask: () => void }) => {
   return (
     <button
       onClick={() => addTask()}
-      className="ml-5 bg-white border-4
-     border-green-600 py-2 px-4 font-bold text-xl
-     relative text-green-600 "
+      className="border-2 h-16 w-16 bg-indigo-600 rounded-full
+       font-light text-5xl text-center pb-1 text-white absolute right-4 bottom-8"
     >
-      Add +
+      +
     </button>
   );
 };

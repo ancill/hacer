@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
-import { AddButton } from './components/AddButton';
 import { ListContainer } from './components/ListContainer';
-import { TitleBar } from './components/TitleBar';
 import Modal from './components/Modal';
+import { TitleBar } from './components/TitleBar';
 
 export interface Task {
   label: string;

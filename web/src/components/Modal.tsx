@@ -24,13 +24,12 @@ export default function Modal({ showModal, setShowModal }) {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                    I always felt like I could do anything. That’s the main thing people
-                    are controlled by! Thoughts- their perception of themselves! They're
-                    slowed down by their perception of themselves. If you're taught you
-                    can’t do anything, you won’t do anything. I was taught I could do
-                    everything.
-                  </p>
+                  <input
+                    type="text"
+                    title="Add new note"
+                    placeholder="Add new note"
+                    className="py-2 px-4 text-slate-500 text-lg leading-relaxed border-slate-400 border-2 rounded-md"
+                  />
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">

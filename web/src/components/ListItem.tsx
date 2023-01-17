@@ -2,6 +2,9 @@ import { Task } from '../App';
 import { CheckBox } from './CheckBox';
 
 export const ListItem = ({ isDone, label, id, category }: Task) => {
+  const onChange = (value: boolean) => {
+    console.log(id, value);
+  };
   const labelVariants = {
     checked: 'text-gray-400',
     unChecked: 'text-gray-700',
@@ -9,7 +12,7 @@ export const ListItem = ({ isDone, label, id, category }: Task) => {
 
   return (
     <li className="flex mb-4">
-      <CheckBox isDone={isDone} />
+      <CheckBox isDone={isDone} onChange={onChange} />
       <div className="flex flex-col pt-1 pl-4">
         <label
           className={`${

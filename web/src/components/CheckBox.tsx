@@ -1,6 +1,12 @@
 import React from 'react';
 
-export const CheckBox = ({ isDone }: { isDone: boolean }) => {
+export const CheckBox = ({
+  isDone,
+  onChange,
+}: {
+  isDone: boolean;
+  onChange: (value: boolean) => void;
+}) => {
   return (
     <input
       className="appearance-none h-6 w-6 border-2 border-gray-400 rounded-md bg-white
@@ -10,6 +16,7 @@ export const CheckBox = ({ isDone }: { isDone: boolean }) => {
       id="checkbox-one"
       title="checkbox"
       checked={isDone}
+      onChange={() => onChange(!isDone)}
     />
   );
 };

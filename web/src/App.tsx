@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
-import { AddNewItem } from './components/AddNewItem';
-import { Divider } from './components/Divider';
+import { AddButton } from './components/AddButton';
 import { ListContainer } from './components/ListContainer';
 import { TitleBar } from './components/TitleBar';
-import { AddButton } from './components/AddButton';
+import Modal from './components/Modal';
 
 export interface Task {
   label: string;
@@ -21,19 +20,19 @@ const tasks: Task[] = [
   },
   {
     label: 'Submit 2019 tax return',
-    id: '1',
+    id: '4',
     isDone: false,
     category: '💞 Wedding',
   },
   {
     label: 'Print parking passes',
-    id: '1',
+    id: '21',
     isDone: false,
     category: '🛒 Shopping List',
   },
   {
     label: 'Sign contract, send back',
-    id: '1',
+    id: '144',
     isDone: false,
     category: '🖥️ Freelance',
   },
@@ -41,6 +40,7 @@ const tasks: Task[] = [
 
 function App() {
   const addTask = () => console.log('pressed');
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="bg-slate-500">
@@ -51,7 +51,7 @@ function App() {
           type="Complete"
           tasks={tasks.map((el) => ({ ...el, isDone: true }))}
         />
-        <AddButton addTask={addTask} />
+        <Modal showModal={showModal} setShowModal={setShowModal} />
       </div>
     </div>
   );

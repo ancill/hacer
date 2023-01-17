@@ -26,8 +26,13 @@ export const TitleBar = () => {
   const time = new Date();
   console.log('h');
   return (
-    <div className="p-8 uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-      {formatDate(time)}
+    <div className="flex flex-col items-start border-b-2 pb-4">
+      <div className="tracking-wide text-3xl font-bold text-black">
+        {formatDate(time)}
+      </div>
+      <div className="mt-2 font-semibold text-sm text-gray-600">
+        5 incomplete, 5 completed
+      </div>
     </div>
   );
 };

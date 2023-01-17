@@ -1,12 +1,15 @@
 import { Task } from '../App';
 import { ListItem } from './ListItem';
 
-export const ListContainer = ({ tasks }: { tasks: Task[] }) => {
+export type ListType = 'Incomplete' | 'Complete';
+
+export const ListContainer = ({ tasks, type }: { tasks: Task[]; type: ListType }) => {
   return (
-    <div className="flex justify-start p-5">
+    <div className="py-4">
+      <div className="font-bold text-lg text-gray-700 mb-4">{type}</div>
       <ul>
         {tasks.map((el) => (
-          <ListItem key={el.id} label={el.label} isDone={el.isDone} />
+          <ListItem key={el.id} {...el} />
         ))}
       </ul>
     </div>

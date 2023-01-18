@@ -41,7 +41,9 @@ function App() {
   const [taskList, updateTaskList] = useState(tasks);
 
   const onTaskListUpdate = (newTask: Task) => {
-    updateTaskList([...taskList, newTask]);
+    const newTaskList = [...taskList];
+    newTaskList[newTaskList.findIndex((el) => el.id === newTask.id)] = newTask;
+    updateTaskList(newTaskList);
   };
 
   console.log(taskList);

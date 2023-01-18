@@ -38,19 +38,28 @@ const tasks: Task[] = [
 ];
 
 function App() {
-  const addTask = () => console.log('pressed');
-  const [showModal, setShowModal] = useState(false);
+  const [taskList, updateTaskList] = useState(tasks);
 
+  const onTaskListUpdate = (newTask: Task) => {
+    updateTaskList([...taskList, newTask]);
+  };
+
+  console.log(taskList);
   return (
-    <div className="bg-slate-500">
+    <div className="bg-slate-500 py-2">
       <div className="p-4 max-w-md container bg-white rounded-xl overflow-hidden relative">
         <TitleBar />
-        <ListContainer type="Incomplete" tasks={tasks} />
+        <ListContainer
+          type="Incomplete"
+          tasks={taskList.filter((val) => !val.isDone)}
+          updateTask={onTaskListUpdate}
+        />
         <ListContainer
           type="Complete"
-          tasks={tasks.map((el) => ({ ...el, isDone: true }))}
+          updateTask={onTaskListUpdate}
+          tasks={taskList.filter((val) => val.isDone)}
         />
-        <Modal showModal={showModal} setShowModal={setShowModal} />
+        <Modal />
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
+import { useState } from 'react';
+
 import { AddButton } from './AddButton';
 
-export default function Modal({ showModal, setShowModal }) {
+export default function Modal() {
+  const [showModal, setShowModal] = useState<boolean>(false);
   return (
     <>
       <AddButton setShowModal={setShowModal} />

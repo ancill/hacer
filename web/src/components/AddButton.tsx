@@ -1,6 +1,10 @@
 import React from 'react';
 
-export const AddButton = ({ setShowModal }: { setShowModal: () => void }) => {
+export const AddButton = ({
+  setShowModal,
+}: {
+  setShowModal: (value: boolean) => void;
+}) => {
   return (
     <button
       onClick={() => setShowModal(true)}

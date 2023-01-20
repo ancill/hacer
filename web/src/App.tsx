@@ -40,6 +40,7 @@ const tasks: Task[] = [
 
 function App() {
   const [taskList, updateTaskList] = useState(tasks);
+
   const { error, isLoading, response } = useFetch('http://localhost:3001/tasks');
 
   const onTaskListUpdate = (newTask: Task) => {
@@ -48,7 +49,16 @@ function App() {
     updateTaskList(newTaskList);
   };
 
-  console.log(response?.body);
+  if (isLoading) {
+    return <div className="bg-slate-500 text-white text-lg">Loading...</div>;
+  }
+
+  useEffect(() => {
+    if (response) {
+      updateTaskList(response);
+    }
+  }, []);
+
   return (
     <div className="bg-slate-500 py-2">
       <div className="p-4 max-w-md container bg-white rounded-xl overflow-hidden relative">

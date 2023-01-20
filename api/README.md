@@ -42,6 +42,7 @@ services:
 volumes:
   postgres:
 ```
+docker compose -up
 
 npx prisma init
 
@@ -72,3 +73,6 @@ main()
 
 
 ```
+
+
+npx ts-node src/index.ts

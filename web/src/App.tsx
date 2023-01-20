@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ListContainer } from './components/ListContainer';
 import Modal from './components/Modal';
 import { TitleBar } from './components/TitleBar';
+import { useFetch } from './useFetch';
 
 export interface Task {
   label: string;
@@ -39,6 +40,7 @@ const tasks: Task[] = [
 
 function App() {
   const [taskList, updateTaskList] = useState(tasks);
+  const { error, isLoading, response } = useFetch('http://localhost:3001/tasks');
 
   const onTaskListUpdate = (newTask: Task) => {
     const newTaskList = [...taskList];
@@ -46,11 +48,12 @@ function App() {
     updateTaskList(newTaskList);
   };
 
-  console.log(taskList);
+  console.log(response);
   return (
     <div className="bg-slate-500 py-2">
       <div className="p-4 max-w-md container bg-white rounded-xl overflow-hidden relative">
         <TitleBar />
+
         <ListContainer
           type="Incomplete"
           tasks={taskList.filter((val) => !val.isDone)}

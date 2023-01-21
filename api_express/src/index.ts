@@ -1,11 +1,3 @@
-<<<<<<< Updated upstream
-import { Category, PrismaClient, Task } from "@prisma/client"
-import express, { Request } from "express"
-
-const prisma = new PrismaClient()
-const app = express()
-const createLog = (req: any, res: any, next: any) => {
-=======
 import { Category, PrismaClient, Task } from "@prisma/client";
 import express, { NextFunction, Request, Response } from "express";
 
@@ -17,25 +9,12 @@ const createLogMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
->>>>>>> Stashed changes
   res.on("finish", function () {
     console.log(
       req.method,
       decodeURI(req.url),
       res.statusCode,
       res.statusMessage
-<<<<<<< Updated upstream
-    )
-  })
-  next()
-}
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*")
-  next()
-})
-app.use(express.json())
-app.use(createLog)
-=======
     );
   });
   next();
@@ -44,8 +23,7 @@ app.use(createLog)
 const nameInjectionMiddleware =
   ({ name }: { name: string }) =>
   (req: Request, res: Response, next: NextFunction) => {
-    // @ts-ignore
-    req.name = "Ivan";
+    res.locals.name = name;
     next();
   };
 
@@ -53,35 +31,56 @@ app.use(express.json());
 app.use(createLogMiddleware);
 
 // Fetch task by id
-app.get("/tasks/:taskId", async (req, res) => {
-  const { done } = req.params;
-
-  const tasks = await prisma.task.findMany({
-    where: { isDone: !!done },
+app.get("/task/:taskId", async (req: Request<{ taskId: string }>, res) => {
+  const { taskId } = req.params;
+  console.log(taskId);
+  const task = await prisma.task.findFirst({
+    where: { id: Number(taskId) },
   });
-  res.json(tasks);
+  res.json(task);
 });
->>>>>>> Stashed changes
 
 // Fetch all Tasks
 app.get("/tasks", async (req, res) => {
-  const tasks = await prisma.task.findMany()
-  res.json(tasks)
-})
+  const tasks = await prisma.task.findMany();
+  res.json(tasks);
+});
 
+app.use(nameInjectionMiddleware({ name: "DONE!✅" }));
 // Fetch all done/undone Tasks
-app.get("/tasks/:done", async (req, res) => {
-  const { done } = req.params
+app.get(
+  "/tasks/:done",
+  async (
+    req: Request<{ done: string }, {}, { name: string }, {}>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { done } = req.params;
+    console.log(res.locals.name);
+    const tasks = await prisma.task.findMany({
+      where: { isDone: !done },
+    });
+    res.json(tasks);
+  }
+);
 
-  const tasks = await prisma.task.findMany({
-    where: { isDone: !!done },
-  })
-  res.json(tasks)
-})
+const throwError = async () => {
+  throw new Error("Boom");
+};
+
+app.get("/error", async (req, res) => {
+  try {
+    await throwError();
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: error + "" });
+  }
+});
 
 // Create new Task
 app.post(`/task`, async (req: Request<Task>, res) => {
-  const { label } = req.body as Task
+  const { label } = req.body as Task;
   const result = await prisma.task.create({
     data: {
       label,
@@ -92,9 +91,9 @@ app.post(`/task`, async (req: Request<Task>, res) => {
         },
       },
     },
-  })
-  res.json(result)
-})
+  });
+  res.json(result);
+});
 
 // app.post(`/category`, async (req: Request<Category>, res) => {
 //   const result = await prisma.task.create({
@@ -143,4 +142,4 @@ app.post(`/task`, async (req: Request<Task>, res) => {
 
 app.listen(3001, () =>
   console.log("REST API server ready at: http://localhost:3001")
-)
+);

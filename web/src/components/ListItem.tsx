@@ -7,6 +7,7 @@ interface ListItemProps {
 export const ListItem = (props: ListItemProps) => {
   const { onItemUpdate, task } = props;
   const onCheckBoxPress = (value: boolean) => {
+    console.log(task);
     const newTask: Task = { ...task, isDone: value };
     onItemUpdate(newTask);
   };

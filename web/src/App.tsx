@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { ListContainer } from './components/ListContainer';
 import Modal from './components/Modal';
 import { TitleBar } from './components/TitleBar';
-import { useFetch } from './useFetch';
+import useFetch from './useFetch';
 
 // export interface Task {
 //   label: string;
@@ -61,22 +61,15 @@ export type Category = {
 
 function App() {
   const [taskList, updateTaskList] = useState<Task[]>();
-
-  const { error, isLoading, response } = useFetch<Task[]>('http://localhost:3001/tasks');
-
-  const onTaskListUpdate = (newTask: Task) => {
-    const newTaskList = [...taskList];
-    newTaskList[newTaskList.findIndex((el) => el.id === newTask.id)] = newTask;
-    updateTaskList(newTaskList);
-  };
+  const { data, error } = useFetch<Task[]>('http://localhost:3001/tasks');
 
   useEffect(() => {
-    if (response) {
-      updateTaskList(response);
+    if (data) {
+      updateTaskList(data);
     }
-  }, [response]);
+  }, [data]);
 
-  if (isLoading) {
+  if (error) {
     return <div className="bg-slate-500 text-white text-lg">Loading...</div>;
   }
 
@@ -85,16 +78,8 @@ function App() {
       <div className="p-4 max-w-md container bg-white rounded-xl overflow-hidden relative">
         <TitleBar />
 
-        <ListContainer
-          type="Incomplete"
-          tasks={taskList?.filter((val) => !val.isDone)}
-          updateTask={onTaskListUpdate}
-        />
-        <ListContainer
-          type="Complete"
-          updateTask={onTaskListUpdate}
-          tasks={taskList?.filter((val) => val.isDone)}
-        />
+        <ListContainer type="Incomplete" tasks={taskList?.filter((val) => !val.isDone)} />
+        <ListContainer type="Complete" tasks={taskList?.filter((val) => val.isDone)} />
         <Modal />
       </div>
     </div>

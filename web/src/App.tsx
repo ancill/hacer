@@ -5,43 +5,64 @@ import Modal from './components/Modal';
 import { TitleBar } from './components/TitleBar';
 import { useFetch } from './useFetch';
 
-export interface Task {
+// export interface Task {
+//   label: string;
+//   id?: string;
+//   isDone: boolean;
+//   category: string;
+// }
+// const tasks: Task[] = [
+//   {
+//     label: 'Upload 1099-R to TurboTax',
+//     id: '2',
+//     isDone: false,
+//     category: '💰 Finance',
+//   },
+//   {
+//     label: 'Submit 2019 tax return',
+//     id: '4',
+//     isDone: false,
+//     category: '💞 Wedding',
+//   },
+//   {
+//     label: 'Print parking passes',
+//     id: '21',
+//     isDone: false,
+//     category: '🛒 Shopping List',
+//   },
+//   {
+//     label: 'Sign contract, send back',
+//     id: '144',
+//     isDone: false,
+//     category: '🖥️ Freelance',
+//   },
+// ];
+
+/**
+ * Model Task
+ *
+ */
+export type Task = {
+  id: number;
   label: string;
-  id?: string;
   isDone: boolean;
-  category: string;
-}
-const tasks: Task[] = [
-  {
-    label: 'Upload 1099-R to TurboTax',
-    id: '2',
-    isDone: false,
-    category: '💰 Finance',
-  },
-  {
-    label: 'Submit 2019 tax return',
-    id: '4',
-    isDone: false,
-    category: '💞 Wedding',
-  },
-  {
-    label: 'Print parking passes',
-    id: '21',
-    isDone: false,
-    category: '🛒 Shopping List',
-  },
-  {
-    label: 'Sign contract, send back',
-    id: '144',
-    isDone: false,
-    category: '🖥️ Freelance',
-  },
-];
+  categoryId: number | null;
+};
+
+/**
+ * Model Category
+ *
+ */
+export type Category = {
+  id: number;
+  title: string;
+  emoji: string | null;
+};
 
 function App() {
-  const [taskList, updateTaskList] = useState(tasks);
+  const [taskList, updateTaskList] = useState<Task[]>();
 
-  const { error, isLoading, response } = useFetch('http://localhost:3001/tasks');
+  const { error, isLoading, response } = useFetch<Task[]>('http://localhost:3001/tasks');
 
   const onTaskListUpdate = (newTask: Task) => {
     const newTaskList = [...taskList];
@@ -49,15 +70,15 @@ function App() {
     updateTaskList(newTaskList);
   };
 
-  if (isLoading) {
-    return <div className="bg-slate-500 text-white text-lg">Loading...</div>;
-  }
-
   useEffect(() => {
     if (response) {
       updateTaskList(response);
     }
-  }, []);
+  }, [response]);
+
+  if (isLoading) {
+    return <div className="bg-slate-500 text-white text-lg">Loading...</div>;
+  }
 
   return (
     <div className="bg-slate-500 py-2">

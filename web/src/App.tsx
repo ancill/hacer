@@ -59,17 +59,21 @@ export type Category = {
   emoji: string | null;
 };
 
+const getTasks = async () => {};
+
 function App() {
   const [taskList, updateTaskList] = useState<Task[]>();
-  const { data, error } = useFetch<Task[]>('http://localhost:3001/tasks');
+  const [isUpdated, setUpdate] = useState(false);
 
   useEffect(() => {
-    if (data) {
-      updateTaskList(data);
-    }
-  }, [data]);
+    fetch('http://localhost:3001/tasks')
+      .then((res) => res.json())
+      .then((res) => {
+        updateTaskList(res);
+      });
+  }, [isUpdated]);
 
-  if (error) {
+  if (!taskList) {
     return <div className="bg-slate-500 text-white text-lg">Loading...</div>;
   }
 
@@ -78,8 +82,16 @@ function App() {
       <div className="p-4 max-w-md container bg-white rounded-xl overflow-hidden relative">
         <TitleBar />
 
-        <ListContainer type="Incomplete" tasks={taskList?.filter((val) => !val.isDone)} />
-        <ListContainer type="Complete" tasks={taskList?.filter((val) => val.isDone)} />
+        <ListContainer
+          type="Incomplete"
+          tasks={taskList?.filter((val) => !val.isDone)}
+          onUpdated={(res) => setUpdate(!isUpdated)}
+        />
+        <ListContainer
+          type="Complete"
+          tasks={taskList?.filter((val) => val.isDone)}
+          onUpdated={(res) => setUpdate(!isUpdated)}
+        />
         <Modal />
       </div>
     </div>

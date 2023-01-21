@@ -13,7 +13,7 @@ type Action<T> =
   | { type: 'fetched'; payload: T }
   | { type: 'error'; payload: Error };
 
-function useFetch<T = unknown>(url?: string, options?: RequestInit): State<T> {
+function useFetch<T = unknown>(url?: string, deps?: any): State<T> {
   const cache = useRef<Cache<T>>({});
 
   // Used to prevent state update if the component is unmounted
@@ -81,7 +81,7 @@ function useFetch<T = unknown>(url?: string, options?: RequestInit): State<T> {
       cancelRequest.current = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url]);
+  }, [url, ...deps]);
 
   return state;
 }

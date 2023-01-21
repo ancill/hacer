@@ -5,7 +5,15 @@ import { ListItem } from './ListItem';
 
 export type ListType = 'Incomplete' | 'Complete';
 
-export const ListContainer = ({ tasks, type }: { tasks?: Task[]; type: ListType }) => {
+export const ListContainer = ({
+  tasks,
+  type,
+  onUpdated,
+}: {
+  tasks?: Task[];
+  type: ListType;
+  onUpdated: (res: Task) => void;
+}) => {
   const updateTask = async (newTask: Task) => {
     const res = await mutate(
       'PUT',
@@ -16,6 +24,7 @@ export const ListContainer = ({ tasks, type }: { tasks?: Task[]; type: ListType 
         ...newTask,
       },
     );
+    if (res) onUpdated(res);
   };
   return (
     <div className="py-4">

@@ -8,7 +8,7 @@ export const ListContainer = ({
   type,
   updateTask,
 }: {
-  tasks: Task[];
+  tasks?: Task[];
   type: ListType;
   updateTask: (newTask: Task) => void;
 }) => {
@@ -16,7 +16,7 @@ export const ListContainer = ({
     <div className="py-4">
       <div className="font-bold text-lg text-gray-700 mb-4">{type}</div>
       <ul>
-        {tasks.map((el) => (
+        {tasks?.map((el) => (
           <ListItem
             key={el.id}
             task={el}

@@ -87,13 +87,13 @@ function App() {
 
         <ListContainer
           type="Incomplete"
-          tasks={taskList.filter((val) => !val.isDone)}
+          tasks={taskList?.filter((val) => !val.isDone)}
           updateTask={onTaskListUpdate}
         />
         <ListContainer
           type="Complete"
           updateTask={onTaskListUpdate}
-          tasks={taskList.filter((val) => val.isDone)}
+          tasks={taskList?.filter((val) => val.isDone)}
         />
         <Modal />
       </div>

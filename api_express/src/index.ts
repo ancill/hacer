@@ -1,15 +1,30 @@
+<<<<<<< Updated upstream
 import { Category, PrismaClient, Task } from "@prisma/client"
 import express, { Request } from "express"
 
 const prisma = new PrismaClient()
 const app = express()
 const createLog = (req: any, res: any, next: any) => {
+=======
+import { Category, PrismaClient, Task } from "@prisma/client";
+import express, { NextFunction, Request, Response } from "express";
+
+const prisma = new PrismaClient();
+const app = express();
+
+const createLogMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+>>>>>>> Stashed changes
   res.on("finish", function () {
     console.log(
       req.method,
       decodeURI(req.url),
       res.statusCode,
       res.statusMessage
+<<<<<<< Updated upstream
     )
   })
   next()
@@ -20,6 +35,33 @@ app.use((req, res, next) => {
 })
 app.use(express.json())
 app.use(createLog)
+=======
+    );
+  });
+  next();
+};
+
+const nameInjectionMiddleware =
+  ({ name }: { name: string }) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    // @ts-ignore
+    req.name = "Ivan";
+    next();
+  };
+
+app.use(express.json());
+app.use(createLogMiddleware);
+
+// Fetch task by id
+app.get("/tasks/:taskId", async (req, res) => {
+  const { done } = req.params;
+
+  const tasks = await prisma.task.findMany({
+    where: { isDone: !!done },
+  });
+  res.json(tasks);
+});
+>>>>>>> Stashed changes
 
 // Fetch all Tasks
 app.get("/tasks", async (req, res) => {

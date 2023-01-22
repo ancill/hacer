@@ -3,9 +3,11 @@ import { useEffect, useState } from 'react';
 import { AddButton } from './AddButton';
 import { Category } from './ListContainer';
 import ToolTip from './ToolTip';
+import { mutate } from '../mutate';
 
 export default function Modal() {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [categories, setCategories] = useState<Category[]>();
 
   useEffect(() => {
@@ -16,7 +18,9 @@ export default function Modal() {
       });
   }, []);
 
-  createTask = () => {};
+  const createTask = () => {
+    const result = mutate('POST', 'task', {});
+  };
 
   return (
     <>
@@ -42,9 +46,10 @@ export default function Modal() {
                 {/*body*/}
                 <div className="relative p-6 flex flex-col">
                   <select
-                    title="Emoji"
-                    placeholder="Emoji"
+                    title="Category"
+                    placeholder="Category"
                     className="py-4 px-4 text-lg leading-relaxed border-slate-400 border-2 rounded-md mb-4"
+                    onChange={(el) => setSelectedCategory(el.target.value)}
                   >
                     {categories?.map((el) => (
                       <option

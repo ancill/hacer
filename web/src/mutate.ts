@@ -1,9 +1,9 @@
 export const mutate = async (
   method: 'POST' | 'PUT' | 'DELETE',
-  url: string,
+  url: 'category' | 'task',
   params: Object,
 ) => {
-  const response = await fetch(url, {
+  const response = await fetch('http://localhost:3001/' + url + '/', {
     method: method,
     body: JSON.stringify(params),
     headers: {

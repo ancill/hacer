@@ -18,7 +18,7 @@ export type Category = {
   emoji: string | null;
 };
 
-export const ListContainer = ({ type }: { type: ListType }) => {
+export const ListContainer = () => {
   const [taskList, updateTaskList] = useState<Task[]>();
   const [isUpdated, setUpdate] = useState(false);
 
@@ -43,33 +43,42 @@ export const ListContainer = ({ type }: { type: ListType }) => {
         new URLSearchParams({ id: newTask.id.toString() }),
       taskToUpdate,
     );
-    if (res) setUpdate(true);
+    if (res) setUpdate(!isUpdated);
   };
 
   if (!taskList) {
     return <div className="bg-slate-500 text-white text-lg">Loading...</div>;
   }
 
-  const separateByType = (el: Task) =>
+  const separateByType = (el: Task, type: ListType) =>
     (el.isDone && type === 'Complete') || (!el.isDone && type === 'Incomplete');
 
+  const List = ({ type }: { type: ListType }) => {
+    return (
+      <div className="py-4">
+        <div className="font-bold text-lg text-gray-700 mb-4">{type}</div>
+        <ul>
+          {taskList?.map((el) => {
+            const isShow = separateByType(el, type);
+            return (
+              isShow && (
+                <ListItem
+                  key={el.id}
+                  task={el}
+                  onItemUpdate={(newTask) => updateTask(newTask)}
+                />
+              )
+            );
+          })}
+        </ul>
+      </div>
+    );
+  };
+
   return (
-    <div className="py-4">
-      <div className="font-bold text-lg text-gray-700 mb-4">{type}</div>
-      <ul>
-        {taskList?.map((el) => {
-          const isShow = separateByType(el);
-          return (
-            isShow && (
-              <ListItem
-                key={el.id}
-                task={el}
-                onItemUpdate={(newTask) => updateTask(newTask)}
-              />
-            )
-          );
-        })}
-      </ul>
-    </div>
+    <>
+      <List type="Incomplete" />
+      <List type="Complete" />
+    </>
   );
 };

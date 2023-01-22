@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { AddButton } from './AddButton';
-import { Category } from './ListContainer';
+import { Category, Task } from './ListContainer';
 import ToolTip from './ToolTip';
 import { mutate } from '../mutate';
 
 export default function Modal() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [taskLabel, setTaskLabel] = useState('');
   const [categories, setCategories] = useState<Category[]>();
 
   useEffect(() => {
@@ -19,7 +20,12 @@ export default function Modal() {
   }, []);
 
   const createTask = () => {
-    const result = mutate('POST', 'task', {});
+    const newTask: Task = {
+      categoryId: Number(selectedCategory),
+      label: taskLabel,
+    };
+    console.log(newTask);
+    const result = mutate('POST', 'task', newTask);
   };
 
   return (
@@ -66,6 +72,7 @@ export default function Modal() {
                     type="text"
                     title="Add new note"
                     placeholder="Add new note"
+                    onChange={(e) => setTaskLabel(e.target.value)}
                     className="py-3 px-4 text-slate-500 text-lg leading-relaxed border-slate-400 border-2 rounded-md"
                   />
                 </div>
@@ -81,7 +88,10 @@ export default function Modal() {
                   <button
                     className="bg-black text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={() => {
+                      createTask();
+                      setShowModal(false);
+                    }}
                   >
                     Add +
                   </button>

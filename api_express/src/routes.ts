@@ -6,6 +6,10 @@ import {
   getTasks,
   updateTask,
 } from "./controllers/tasks.controller";
+import {
+  createCategory,
+  getCategories,
+} from "./controllers/categories.controller";
 
 function routes(app: Express) {
   app.get("/tasks", getTasks);
@@ -15,5 +19,8 @@ function routes(app: Express) {
     .post(createTask)
     .put(updateTask)
     .delete(deleteTask);
+
+  app.get("/categories", getCategories);
+  app.route("/category").post(createCategory);
 }
 export default routes;

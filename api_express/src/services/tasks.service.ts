@@ -2,7 +2,11 @@ import { Category, PrismaClient, Task } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const getAllTasksService = () => {
-  return prisma.task.findMany();
+  return prisma.task.findMany({
+    include: {
+      Category: true,
+    },
+  });
 };
 
 export const getTaskByIdService = (id: number) => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const formatDate = function () {
   // Create a date object from the timestamp
@@ -25,8 +25,7 @@ const formatDate = function () {
 };
 
 export const TitleBar = () => {
-  const date = formatDate();
-  console.log(date);
+  const date = useMemo(() => formatDate(), []);
   return (
     <div className="flex flex-col items-start border-b-2 pb-4">
       <div className="tracking-wide text-3xl font-bold text-black">{date}</div>

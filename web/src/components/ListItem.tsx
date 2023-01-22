@@ -7,7 +7,6 @@ interface ListItemProps {
 export const ListItem = (props: ListItemProps) => {
   const { onItemUpdate, task } = props;
   const onCheckBoxPress = (value: boolean) => {
-    console.log(task);
     const newTask: Task = { ...task, isDone: value };
     onItemUpdate(newTask);
   };
@@ -17,7 +16,7 @@ export const ListItem = (props: ListItemProps) => {
     unChecked: 'text-gray-700',
   };
 
-  const { category, isDone, label } = task;
+  const { Category, isDone, label } = task;
   return (
     <li className="flex mb-4">
       <CheckBox isDone={isDone} onChange={onCheckBoxPress} />
@@ -30,7 +29,9 @@ export const ListItem = (props: ListItemProps) => {
           {label}
         </label>
         {!isDone && (
-          <label className="text-gray-400 font-semibold text-sm">{category}</label>
+          <label className="text-gray-400 font-semibold text-sm">
+            {Category.emoji} {Category.title}
+          </label>
         )}
       </div>
     </li>

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { AddButton } from './AddButton';
 import { Category, Task } from './ListContainer';
-import ToolTip from './ToolTip';
 import { mutate } from '../mutate';
 
 export default function Modal() {
@@ -19,13 +18,14 @@ export default function Modal() {
       });
   }, []);
 
-  const createTask = () => {
-    const newTask: Task = {
+  const createTask = async () => {
+    const newTask = {
       categoryId: Number(selectedCategory),
       label: taskLabel,
     };
     console.log(newTask);
-    const result = mutate('POST', 'task', newTask);
+    const result = await mutate('POST', 'task', newTask);
+    result && onCreatedTask();
   };
 
   return (
